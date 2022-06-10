@@ -1,0 +1,66 @@
+//CONTOH BREAK
+#include <iostream>
+
+using namespace std;
+
+struct pendaftarjokiml {  
+  int id;
+  string nama;
+  int highstrank;
+  string divice;
+  float wrallseason;
+};
+
+int main() {
+  pendaftarjokiml player[] = {
+  {1,"Rio",3500,"Advan",70.5},
+  {2,"Rafli",2400,"Realme",75.3},
+  {3,"Ferdy",1900,"Samsung",69.7},
+  {4,"Farhat",5000,"Iphone",86.5},
+  {5,"Akmal",2600,"Oppo",72.1}
+  };
+
+  for (int i = 0; i < 5; i++) {
+
+    if (player[i].highstrank >= 4000 && player[i].divice == "Iphone" && player[i].wrallseason >= 80) {
+      cout << "Selamat kepada " << player[i].nama << ", anda adalah orang yang terpilih! \n";
+      break;
+    }
+
+    cout << "Maaf " << player[i].nama << " kamu belum memenihi syarat "<<endl;
+  }
+
+}
+
+
+// CONTOH CONTINUE
+#include <iostream>
+using namespace std;
+
+struct siswa_sman2 {
+    int id;
+    string nama;
+    float ipa,mtk,bahasaindonesia,bahasainggris;
+};
+
+int main() {
+    int nilaiminimallulus = 300;
+
+    siswa_sman2 siswa[] = {
+        {1, "Dira", 78, 80,75.5,86},
+        {2, "Sera", 76.5,80,75,80},
+        {3, "Doni", 74,60,90,80},
+        {4, "Ari", 60,70,56.5,48.5},
+        {5, "Rere", 85,60.5,84.5,86},
+    };
+
+    for(int i = 0; i < 5; i++) {
+        
+        if(siswa[i].ipa + siswa[i].mtk + siswa[i].bahasaindonesia + siswa[i].bahasainggris < nilaiminimallulus) {
+           cout << "Maaf, siswa yang bernama " << siswa[i].nama << " dinyatakan tidak lulus" << endl;
+            continue;
+        }
+        cout << "Selamat, siswa yang bernama " << siswa[i].nama << " dinyatakan lulus" << endl;
+    }
+    
+}
