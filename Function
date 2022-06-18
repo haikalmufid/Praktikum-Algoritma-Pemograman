@@ -1,0 +1,82 @@
+#include<iostream>
+using namespace std;
+
+void Persegipanjang();
+void Lingkaran();
+void Segitiga();
+void mengulangi();
+
+int main(){
+    int pilihan;
+    cout << "Pilihlah rumus yang diinginkan \n"
+            "1. Luas Persegi Panjang\n"
+            "2. Keliling Lingkaran\n"
+            "3. Luas Segitiga\n" <<endl;
+    
+    cout << "Masukkan Pilihan : ";
+    cin >> pilihan;
+
+    switch(pilihan){
+        case 1:
+        Persegipanjang();
+        break;
+        case 2 :
+        Lingkaran();
+        break;
+
+        case 3:
+        Segitiga();
+        break;
+    }
+}
+
+void Persegipanjang(){
+    int panjang;
+    int lebar;
+    cout << "Masukkan Panjang = ";
+    cin >> panjang;
+    cout << "Masukkan Lebar =";
+    cin >> lebar;
+    cout << "\nLuas Persegi Panjang :\n"
+            "Panjang x Lebar = " <<panjang <<" x " << lebar << " = "<< panjang * lebar << endl<<endl;
+    mengulangi();
+}
+
+void Lingkaran(){
+    float phi = 3.14;
+    int r;
+    cout << "Masukkan Jari Jari = ";
+    cin >> r;
+    cout << "\nKeliling Lingkaran :\n"
+            "2 x phi x r = " << "2 x " << phi << " x " << r << " = "<<2 * phi * r << endl<<endl;
+     mengulangi();
+}
+
+void Segitiga(){
+    int alas;
+    int tinggi;
+    cout << "Masukkan Alas = ";
+    cin >> alas;
+    cout << "Masukkan Tinggi = ";
+    cin >> tinggi;
+
+    cout << "\nLuas Segitiga :\n"
+            "Alas x Tinggi / 2 = " << alas << " x " << tinggi << " /2 =" << alas * tinggi / 2 << endl<<endl;
+    mengulangi();
+}
+
+void mengulangi(){
+    int ulangi;
+    cout << "Apakah anda ingin mencoba rumus yang lain?\n"
+            "1. YA\n2. TIDAK\n"
+            "Masukkan Pilihan : ";  
+    cin >> ulangi;
+    cout << endl;
+    switch(ulangi){
+        case 1:
+        main();
+
+        case 2:
+        cout << "Terimakasih";
+    }
+}
