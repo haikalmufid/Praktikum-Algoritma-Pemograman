@@ -1,0 +1,483 @@
+#include<iostream>
+#include<conio.h>
+#include<string.h>
+#include<windows.h>
+#include<stdio.h>
+using namespace std;
+
+struct pokemon{
+    string nama;
+    string tipe;
+    
+    string jurus[4];
+    int dmg;
+    int health;
+};
+
+const int panjangPeta = 20;
+const int lebarPeta = 16;
+
+char arrowKey;
+int posisiKarakterY = 1;
+int posisiKarakterX = 1;
+
+int enemyHealth1 = 220;
+int poke;
+
+string peta[lebarPeta][panjangPeta] = {
+        {"=","=","=","=","=","=","=","=","=","=","=","=","=","=","=","=","=","=","=","="},
+        {"="," "," "," ","="," "," "," "," "," ","="," "," "," "," "," "," "," "," ","="},
+        {"=","=","="," "," "," ","="," ","=","=","="," ","="," ","=","=","=","=","=","="},
+        {"="," ","="," ","=","=","="," "," "," ","P"," ","="," "," ","="," ","#"," ","="},
+        {"="," "," "," ","="," ","=","=","=","=","=","=","="," ","=","="," ","="," ","="},
+        {"=","=","="," ","="," "," "," "," "," ","="," "," "," ","="," "," ","="," ","="},
+        {"="," ","P"," ","="," ","=","=","=","=","=","=","="," ","="," ","=","="," ","="},
+        {"="," ","=","=","="," ","="," "," "," "," "," ","="," "," "," ","=","$"," ","="},
+        {"="," "," "," "," "," ","=","=","=","=","="," ","=","=","=","=","=","=","=","="},
+        {"=","=","=","=","="," "," "," "," ","="," "," "," "," ","="," ","=","/"," ","="},
+        {"="," "," "," "," "," "," ","=","=","="," ","=","=","=","="," ","=","="," ","="},
+        {"="," ","=","=","=","="," ","="," "," "," "," "," "," ","="," "," ","="," ","="},
+        {"="," ","="," "," "," "," ","="," ","=","=","=","=","=","=","="," "," "," ","="},
+        {"="," ","=","=","=","=","=","="," "," "," ","="," "," "," ","="," ","=","=","="},
+        {"="," "," "," ","P"," "," "," "," ","="," "," "," ","="," "," "," "," "," ","="},
+        {"=","=","=","=","=","=","=","=","=","=","=","=","=","=","=","=","=","=","=","="},
+        };
+
+void intro();
+void tuasgerbang();
+void controller();
+void pokemontim();
+void battle();
+void hartakarun();
+
+int main(){
+    intro();
+
+    while(1){
+        // Render grafik
+        for(int y=0; y<lebarPeta; y++) {
+            for(int x=0; x<panjangPeta; x++) {       
+                if(posisiKarakterX == x && posisiKarakterY == y) {
+                    cout << "^" << " ";
+                } 
+                else{
+                cout << peta[y][x] << " ";
+                }
+            }
+            cout << "\n";
+            }
+            if (peta[posisiKarakterY][posisiKarakterX] == "P"){
+                battle();
+                peta[posisiKarakterY][posisiKarakterX] = " ";
+            }
+
+            if (peta[posisiKarakterY][posisiKarakterX] == "/") {
+                tuasgerbang();
+            }
+            
+            if (peta[posisiKarakterY][posisiKarakterX] == "$"){
+                hartakarun();
+                peta[posisiKarakterY][posisiKarakterX] = " ";
+        }
+        cout << "Masukkan Arrowkey :";
+        arrowKey = _getch();
+        controller();
+        system("cls");
+    }
+}
+
+void controller(){
+    // Aturan menggerakkan karakter ke atas
+        if ((arrowKey == 'w' ) && (peta[posisiKarakterY - 1][posisiKarakterX] != "=" && peta[posisiKarakterY - 1][posisiKarakterX] != "#" && posisiKarakterY >= 1)) {
+        // Gerakkan karakter ke atas
+        posisiKarakterY = posisiKarakterY - 1;
+        }
+
+        // Aturan menggerakkan karakter ke bawah
+        if ((arrowKey == 's' ) && (peta[posisiKarakterY + 1][posisiKarakterX] != "=" && peta[posisiKarakterY + 1][posisiKarakterX] != "#" && posisiKarakterY < lebarPeta - 1)) {
+            // Gerakkan karakter ke atas
+            posisiKarakterY = posisiKarakterY + 1;
+        }
+
+        // Aturan menggerakkan karakter ke kiri
+        if ((arrowKey == 'a' ) && (peta[posisiKarakterY][posisiKarakterX - 1] != "=" && peta[posisiKarakterY][posisiKarakterX - 1] != "#" &&posisiKarakterX >= 0)) {
+            // Gerakkan karakter ke atas
+            posisiKarakterX = posisiKarakterX - 1;
+        }
+
+        // Aturan menggerakkan karakter ke kanan
+        if ((arrowKey == 'd' ) && (peta[posisiKarakterY][posisiKarakterX + 1] != "=" && peta[posisiKarakterY][posisiKarakterX + 1] != "#" && posisiKarakterX < panjangPeta - 1)) {
+            // Gerakkan karakter ke atas
+            posisiKarakterX = posisiKarakterX + 1;
+        }
+}
+
+void battle(){
+    int dmg;
+    int eDmg;
+    int enemyHealth1 = 250 ;
+    int Health;
+    int enemyAttack;
+    int Attack; 
+
+    pokemon pokemon1;
+    pokemon1.nama = "Vulpix";
+    pokemon1.tipe = "Api";
+    pokemon1.jurus[0] = "Fireball";
+    pokemon1.jurus[1] = "Firestorm";
+    pokemon1.jurus[2] = "Burn";
+    pokemon1.jurus[3] = "Scratch";
+    pokemon1.health = 240;
+
+    pokemon pokemon2;
+    pokemon2.nama = "Voltorb";
+    pokemon2.tipe = "Electric";
+    pokemon2.jurus[0] = "Spark";
+    pokemon2.jurus[1] = "Shockwave";
+    pokemon2.jurus[2] = "Scratch";
+    pokemon2.jurus[3] = "Thunderbolt";
+    pokemon2.health = 220;
+
+    pokemon pokemon3;
+    pokemon3.nama = "Gigalith";
+    pokemon3.tipe = "Rock";
+    pokemon3.jurus[0] = "Rocktomb";
+    pokemon3.jurus[1] = "Punch";
+    pokemon3.jurus[2] = "Rockthrow";
+    pokemon3.jurus[3] = "Mud-Slap";
+    pokemon3.health = 280;
+
+    pokemon pokemon4;
+    pokemon4.nama = "Litwick";
+    pokemon4.tipe = "Ghost";
+    pokemon4.jurus[0] = "Hex";
+    pokemon4.jurus[1] = "Scaryface";
+    pokemon4.jurus[2] = "Nightshade";
+    pokemon4.jurus[3] = "Shadowclaw";
+    pokemon4.health = 250;
+
+    system("cls");
+    pertarungan:
+        cout << "Pilih Pokemon\n";
+        cout << "1.Vulpix \n";
+        cout << "2.Voltorb \n";
+        cout << "3.Gigalith \n";
+        cout << "4.Litwick \n";
+        cout << "Pokemon yang di pilih : ";
+        cin >> poke;
+        system("cls");
+
+        if (poke == 1){
+            cout << "Aku memilih mu " << pokemon1.nama << "\nAyo lawan dia !" << endl <<endl;
+            
+            while((enemyHealth1 > 0 ) && (pokemon1.health > 0)){
+                
+                cout << "Pilih Serangan: " <<endl;
+                cout << "1." << pokemon1.jurus[0] << endl;
+                cout << "2." << pokemon1.jurus[1] <<endl;
+                cout << "3." << pokemon1.jurus[2]<< endl;
+                cout << "4." << pokemon1.jurus[3]<< endl;
+                cout << "Serangan yang dipilih : ";
+                cin >> Attack; 
+                cout << endl;
+                system("cls");
+
+                switch(Attack){
+                    case 1 :
+                    dmg = rand() % 35 + 6;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 2 :
+                    dmg = rand() % 30 + 9;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 3 : 
+                    dmg = rand() % 15 + 10;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 4 : 
+                    dmg = rand() % 20 + 8;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+                    }
+
+                enemyAttack = eDmg = rand() % 10 + 7;
+                pokemon1.health = pokemon1.health - eDmg;  
+                    
+                if(enemyHealth1 >0 && pokemon1.health >0){
+                    cout << "Enemy Health: " << enemyHealth1 << "%" << endl;
+                    cout << "Your Health: " << pokemon1.health << "%" << endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl;
+                    }
+                if (enemyHealth1 <= 0 && pokemon1.health >= 0){
+                    cout << "Enemy Health: 0%" << endl;
+                    cout << "Your Health: " << pokemon1.health << "%" << endl;
+                    cout << "Kamu telah memenangkan pertarungan!"<< endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl;
+                    goto pertarunganmenang;
+                    
+                }
+                if(pokemon1.health <= 0 && enemyHealth1 >= 0){
+                    cout << "Enemy Health: " << enemyHealth1 << "%" << endl;
+                    cout << "Your Health: 0%" << endl;
+                    system("cls");
+                    cout <<"Kamu kalah, Lakukan tanding ulang" <<endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl << endl;
+                    goto pertarungankalah;
+                }
+            }
+        }
+        if (poke == 2){
+            cout << "Aku memilih mu " << pokemon2.nama << "\nAyo lawan dia !" << endl <<endl;
+            
+            while((enemyHealth1 > 0 ) && (pokemon2.health > 0)){
+                
+                cout << "Pilih Serangan: " <<endl;
+                cout << "1." << pokemon2.jurus[0] << endl;
+                cout << "2." << pokemon2.jurus[1] <<endl;
+                cout << "3." << pokemon2.jurus[2]<< endl;
+                cout << "4." << pokemon2.jurus[3]<< endl;
+                cout << "Serangan yang dipilih : ";
+                cin >> Attack; 
+                cout << endl;
+                system("cls");
+
+                switch(Attack){
+                    case 1 :
+                    dmg = rand() % 25 + 10;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 2 :
+                    dmg = rand() % 15 + 14;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 3 : 
+                    dmg = rand() % 10 + 17;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 4 : 
+                    dmg = rand() % 20 + 10;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+                    }
+
+                enemyAttack = eDmg = rand() % 10 + 7;
+                pokemon2.health = pokemon2.health - eDmg;  
+                    
+                if(enemyHealth1 > 0 && pokemon2.health > 0){
+                    cout << "Enemy Health: " << enemyHealth1 << "%" << endl;
+                    cout << "Your Health: " << pokemon2.health << "%" << endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl;
+                    }
+                if (enemyHealth1 <= 0 && pokemon2.health >= 0){
+                    cout << "Enemy Health: 0%" << endl;
+                    cout << "Your Health: " << pokemon2.health << "%" << endl;
+                    cout << "Kamu telah memenangkan pertarungankalah!"<< endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl;
+                    goto pertarunganmenang;
+            
+                }
+                if(pokemon2.health <= 0 && enemyHealth1 >= 0){
+                    cout << "Enemy Health: " << enemyHealth1 << "%" << endl;
+                    cout << "Your Health: 0%" << endl;
+                    cout <<"Kamu kalah,Lakukan tanding ulang" <<endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl;
+                    goto pertarungankalah;
+                }
+            }
+        }
+        if (poke == 3){
+            cout << "Aku memilih mu " << pokemon3.nama << "\nAyo lawan dia !" << endl <<endl;
+            
+            while((enemyHealth1 > 0 ) && (pokemon3.health > 0)){
+                
+                cout << "Pilih Serangan: " <<endl;
+                cout << "1." << pokemon3.jurus[0] << endl;
+                cout << "2." << pokemon3.jurus[1] <<endl;
+                cout << "3." << pokemon3.jurus[2]<< endl;
+                cout << "4." << pokemon3.jurus[3]<< endl;
+                cout << "Serangan yang dipilih : ";
+                cin >> Attack; 
+                cout << endl;
+                system("cls");
+
+                switch(Attack){
+                    case 1 :
+                    dmg = rand() % 25 + 15;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 2 :
+                    dmg = rand() % 20 + 17;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 3 : 
+                    dmg = rand() % 35 + 5;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 4 : 
+                    dmg = rand() %  25 + 15;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+                    }
+
+                enemyAttack = eDmg = rand() % 10 + 7;
+                pokemon3.health = pokemon3.health - eDmg;  
+                    
+                if(enemyHealth1 > 0 && pokemon3.health > 0){
+                    cout << "Enemy Health: " << enemyHealth1 << "%" << endl;
+                    cout << "Your Health: " << pokemon3.health << "%" << endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl;
+                    }
+                if (enemyHealth1 <= 0 && pokemon3.health >= 0){
+                    cout << "Enemy Health: 0%" << endl;
+                    cout << "Your Health: " << pokemon3.health << "%" << endl;
+                    cout << "Kamu telah memenangkan pertarungankalah!"<< endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl;
+                    goto pertarunganmenang;
+            
+                }
+                if(pokemon3.health <= 0 && enemyHealth1 >= 0){
+                    cout << "Enemy Health: " << enemyHealth1 << "%" << endl;
+                    cout << "Your Health: 0%" << endl;
+                    cout <<"Kamu kalah,Lakukan tanding ulang" <<endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl;
+                    goto pertarungankalah;
+                }
+            }
+        }
+        if (poke == 4){
+            cout << "Aku memilih mu " << pokemon4.nama << "\nAyo lawan dia !" << endl <<endl;
+            
+            while((enemyHealth1 > 0 ) && (pokemon4.health > 0)){
+                
+                cout << "Pilih Serangan: " <<endl;
+                cout << "1." << pokemon4.jurus[0] << endl;
+                cout << "2." << pokemon4.jurus[1] <<endl;
+                cout << "3." << pokemon4.jurus[2]<< endl;
+                cout << "4." << pokemon4.jurus[3]<< endl;
+                cout << "Serangan yang dipilih : ";
+                cin >> Attack; 
+                cout << endl;
+                system("cls");
+
+                switch(Attack){
+                    case 1 :
+                    dmg = rand() % 20 + 17;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 2 :
+                    dmg = rand() % 15 + 20;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 3 : 
+                    dmg = rand() % 19 + 16;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+
+                    case 4 : 
+                    dmg = rand() % 14 + 20;
+                    enemyHealth1 = enemyHealth1 - dmg;
+                    break;
+                    }
+
+                enemyAttack = eDmg = rand() % 10 + 7;
+                pokemon4.health = pokemon4.health - eDmg;  
+                    
+                if(enemyHealth1 > 0 && pokemon4.health > 0){
+                    cout << "Enemy Health: " << enemyHealth1 << "%" << endl;
+                    cout << "Your Health: " << pokemon4.health << "%" << endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl;
+                    }
+                if (enemyHealth1 <= 0 && pokemon4.health >= 0){
+                    cout << "Enemy Health: 0%" << endl;
+                    cout << "Your Health: " << pokemon4.health << "%" << endl;
+                    cout << "Kamu telah memenangkan pertarungankalah!"<< endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl;
+                    goto pertarunganmenang;
+                }
+                if(pokemon4.health <= 0 && enemyHealth1 >= 0){
+                    cout << "Enemy Health: " << enemyHealth1 << "%" << endl;
+                    cout << "Your Health: 0%" << endl;
+                    cout <<"Kamu kalah,Lakukan tanding ulang" <<endl;
+                    cout << "______________________________________________" << endl;
+                    cout << endl;
+                    goto pertarungankalah;
+                }
+            }
+        }
+    
+    pertarungankalah:
+    goto pertarungan;
+
+    pertarunganmenang:
+    cout << "Kembali ke dalam game "<< endl;
+}
+
+void tuasgerbang(){
+    int tuas;
+    peta[posisiKarakterY][posisiKarakterX] == "#";
+    system("cls");
+    cout << "Apakah anda ingin membuka gerbang?"<< endl;
+    cout << "1.Ya\n2.Tidak\nMasukkan pilihan : ";
+    cin >> tuas;
+    if (tuas == 1){
+        cout << "======================\n" << endl; 
+        cout << "Gerbang telah terbuka!\n" << endl;
+        cout << "======================\n" << endl;
+
+        peta[posisiKarakterY = 3][posisiKarakterX = 17] = " ";
+        peta[posisiKarakterY = 9][posisiKarakterX = 17] = " ";
+        }
+    if(tuas == 2){
+        cout << "=====================\n\nGerbang belum terbuka\n\n=====================";
+    }
+}
+
+void intro(){
+    string kisah;
+    cout << "=====================================================\n" << endl;
+    cout << "         Selamat Datang di game Pokemon Maze         \n" << endl;
+    cout << "=====================================================\n\n\n" << endl;
+
+    cout << "Masukkan L untuk melanjutkan" << endl;
+    cin >> kisah;
+    system("cls");
+
+    cout << "==============================================================\n\n\n";
+    cout << "Disuatu hari ash bersama pokemonnya masuk ke sebuah labirin" << endl;
+    cout << "yang di dalam nya terdapat harta karun. Ash bersama 4 pokemonnya"<< endl;
+    cout << "berniat untuk mencari harta karun tersebut dan mengalahkan" << endl;
+    cout << "semua penjaga yang ada didalam labirin\n\n"<< endl;
+    cout << "==============================================================\n\n" << endl;
+
+    cout << "Masukkan L untuk melanjutkan ke dalam game" << endl;
+    cin >> kisah;
+    system("cls");
+}
+
+void hartakarun(){
+    cout << "=============================================\n\nSelamat kamu telah menyelesaikan labirin ini\n\n=============================================" << endl;
+    exit(0);
+}
